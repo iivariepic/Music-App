@@ -25,7 +25,7 @@ class Album(models.Model):
                         MinValueValidator(1900)])
 
     date_added = models.DateField(auto_now_add=True)
-    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL)
+    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         """Return string representation of the Album"""
@@ -36,7 +36,7 @@ class Track(models.Model):
     """A model for tracks/songs"""
     name = models.CharField(max_length=300)
     length = models.IntegerField(default=0) # Length in seconds
-    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL)
+    artist = models.ForeignKey(Artist, on_delete=models.SET_NULL, null=True)
     # Song can be a single that is not on an album as well
     album = models.ForeignKey(Album, on_delete=models.SET_NULL, null=True)
 
@@ -67,3 +67,6 @@ class Review(models.Model):
     date_created = models.DateField(auto_now_add=True)
     is_public = models.BooleanField(default=False) # Public means other users can see this review
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
