@@ -6,6 +6,7 @@ urlpatterns=[
     #Home page
     path(' ',views.index, name='index'),
     path('albums/', views.album_list, name='album_list'),
-     path('albums/<int:album_id>/tracks/', views.track_list, name='track_list'),
+    path('albums/<int:album_id>/tracks/', views.track_list, name='track_list'),
+    path('artist/', views.artist, name='artist'),
 
 ]
