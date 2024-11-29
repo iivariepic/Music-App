@@ -1,11 +1,11 @@
 @echo off
 REM Create the virtual environment
 echo Creating virtual environment...
-python -m venv .ma_env
+python -m venv ma_env
 
 REM Activate the virtual environment
 echo Activating virtual environment...
-call .ma_env\Scripts\activate.bat
+call ma_env\Scripts\activate.bat
 
 REM Install dependencies
 echo Installing dependencies from requirements.txt...
