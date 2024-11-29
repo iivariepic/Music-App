@@ -1,10 +1,10 @@
 # Create the virtual environment
 echo "Creating virtual environment..."
-virtualenv .env
+virtualenv .ma_env
 
 # Activate the virtual environment
 echo "Activating virtual environment..."
-source .env/bin/activate
+source .ma_env/bin/activate
 
 # Install dependencies
 echo "Installing dependencies from requirements.txt..."
