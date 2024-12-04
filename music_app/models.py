@@ -47,7 +47,7 @@ class Track(models.Model):
                                        ])
 
     def __str__(self):
-        return self.name + " - " + self.artist.name
+        return self.name + " | " + self.artist.name
 
 
 class Review(models.Model):
@@ -69,4 +69,11 @@ class Review(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.content
+        """Return string representation of Review"""
+        result = f"Stars: {self.rating}"
+        result += f" | {self.creator}\n"
+        result += f"{self.content[:50]}"
+        if len(self.content) > 50:
+            result += "..."
+
+        return result
