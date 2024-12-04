@@ -1,2 +1,3 @@
 .idea
 ma_env/
+__pycache__/
