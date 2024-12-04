@@ -69,7 +69,7 @@ class Review(models.Model):
     creator = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        """Return string representation of Review"""
+        """Return string representation of a Review"""
         result = f"Stars: {self.rating}"
         result += f" | {self.creator}\n"
         result += f"{self.content[:50]}"
