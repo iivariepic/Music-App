@@ -29,9 +29,13 @@ def add_album(request):
         form = AlbumForm()
     return render(request, 'music_app/add_album.html', {'form': form})
 
+def artist_list(request):
+    """View to display all artists"""
+    artists = Artist.objects.all()
+    return render(request, 'music_app/artist.html', {'artists': artists})
 
-def artist(request):
-    """View to display all albums"""
-    artist = Artist.objects.all()
-    return render(request, 'music_app/artist.html', {'artist': artist})
-    
+def artist_albums(request, artist_id):
+    """View to display albums of a specific artist"""
+    artist = get_object_or_404(Artist, id=artist_id)
+    albums = Album.objects.filter(artist=artist)
+    return render(request, 'music_app/artist_albums.html', {'artist': artist, 'albums': albums})
