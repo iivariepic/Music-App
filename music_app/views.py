@@ -1,6 +1,6 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Album, Track, Artist
-from .forms import AlbumForm
+from .forms import AlbumForm, TrackForm
 
 
 def index(request):
@@ -39,3 +39,19 @@ def artist_albums(request, artist_id):
     artist = get_object_or_404(Artist, id=artist_id)
     albums = Album.objects.filter(artist=artist)
     return render(request, 'music_app/artist_albums.html', {'artist': artist, 'albums': albums})
+
+
+
+def add_track(request, album_id):
+    """View to add a new track to a specific album"""
+    album = get_object_or_404(Album, id=album_id)
+    if request.method == 'POST':
+        form = TrackForm(request.POST)
+        if form.is_valid():
+            track = form.save(commit=False)
+            track.album = album
+            track.save()
+            return redirect('music_app:track_list', album_id=album.id)
+    else:
+        form = TrackForm(initial={'album': album})
+    return render(request, 'music_app/add_track.html', {'form': form, 'album': album})

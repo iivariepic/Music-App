@@ -1,0 +1,10 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    <h1>Add New Track to {{ album.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Track</button>
+    </form>
+{% endblock %}
