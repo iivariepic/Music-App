@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Album, Track, Artist
-from .forms import AlbumForm, TrackForm
+from .forms import AlbumForm, TrackForm, ArtistForm
 
 
 def index(request):
@@ -55,3 +55,14 @@ def add_track(request, album_id):
     else:
         form = TrackForm(initial={'album': album})
     return render(request, 'music_app/add_track.html', {'form': form, 'album': album})
+
+def add_artist(request):
+    """View to add a new artist"""
+    if request.method == 'POST':
+        form = ArtistForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('music_app:artist_list')
+    else:
+        form = ArtistForm()
+    return render(request, 'music_app/add_artist.html', {'form': form})
