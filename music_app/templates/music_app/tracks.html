@@ -1,0 +1,15 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    <h1>Tracks from {{ album.name }} by {{ album.artist.name }}</h1>
+    <ul>
+        {% for track in tracks %}
+            <li>
+                <strong>{{ track.name }}</strong><br>
+                Artist: {{ track.artist.name }}<br>
+                Length: {{ track.length }} seconds<br>
+                Release Year: {{ track.release_year }}<br>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

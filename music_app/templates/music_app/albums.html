@@ -1,0 +1,15 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    <h1>Albums</h1>
+    <ul>
+        {% for album in albums %}
+            <li>
+                <a href="{% url 'music_app:track_list' album_id=album.id %}">
+                    {{ album.name }} - {{ album.artist.name }} ({{ album.release_year }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+    <h2><a href="{% url 'music_app:add_album' %}">Add New Album</a></h2>
+{% endblock %}
