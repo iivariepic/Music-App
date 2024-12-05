@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Album, Track, Artist
+from .forms import AlbumForm, TrackForm
+
 
 def index(request):
     """Home page for music app"""
@@ -16,7 +18,40 @@ def track_list(request, album_id):
     tracks = Track.objects.filter(album=album)
     return render(request, 'music_app/tracks.html', {'tracks': tracks, 'album': album})
 
-def artist(request):
-    """View to display all albums"""
-    artist = Artist.objects.all()
-    return render(request, 'music_app/artist.html', {'artist': artist})
+def add_album(request):
+    """View to add a new album"""
+    if request.method == 'POST':
+        form = AlbumForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('music_app:album_list')
+    else:
+        form = AlbumForm()
+    return render(request, 'music_app/add_album.html', {'form': form})
+
+def artist_list(request):
+    """View to display all artists"""
+    artists = Artist.objects.all()
+    return render(request, 'music_app/artist.html', {'artists': artists})
+
+def artist_albums(request, artist_id):
+    """View to display albums of a specific artist"""
+    artist = get_object_or_404(Artist, id=artist_id)
+    albums = Album.objects.filter(artist=artist)
+    return render(request, 'music_app/artist_albums.html', {'artist': artist, 'albums': albums})
+
+
+
+def add_track(request, album_id):
+    """View to add a new track to a specific album"""
+    album = get_object_or_404(Album, id=album_id)
+    if request.method == 'POST':
+        form = TrackForm(request.POST)
+        if form.is_valid():
+            track = form.save(commit=False)
+            track.album = album
+            track.save()
+            return redirect('music_app:track_list', album_id=album.id)
+    else:
+        form = TrackForm(initial={'album': album})
+    return render(request, 'music_app/add_track.html', {'form': form, 'album': album})

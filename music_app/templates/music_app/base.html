@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music App</title>
+
+</head>
+<body>
+    <header>
+        <h1>Music App</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'music_app:index' %}">Home</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+    <footer>
+        <p>&copy; 2023 Music App</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    <h1>Artists</h1>
+    <ul>
+        {% for artist in artists %}
+            <li>
+                <a href="{% url 'music_app:artist_albums' artist_id=artist.id %}">
+                    {{ artist.name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
