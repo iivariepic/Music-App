@@ -1,4 +1,6 @@
 from PyInstaller.utils.win32.winresource import add_or_update_resource
+from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -56,6 +58,7 @@ def track_list(request, album_id):
         'reviews': reviews,
     })
 
+@login_required
 def add_album(request):
     """View to add a new album"""
     if request.method == 'POST':
@@ -89,6 +92,7 @@ def track_details(request, track_id):
                   {'track': track, 'reviews': reviews})
 
 
+@login_required
 def add_track(request, artist_id, album_id):
     """View to add a new track to a specific artist"""
 
@@ -119,6 +123,7 @@ def add_track(request, artist_id, album_id):
     return render(request, 'music_app/add_track.html', {'form': form, 'artist': artist})
 
 
+@login_required
 def add_artist(request):
     """View to add a new artist"""
     if request.method == 'POST':
@@ -131,6 +136,7 @@ def add_artist(request):
     return render(request, 'music_app/add_artist.html', {'form': form})
 
 
+@login_required
 def add_review(request, type, obj_id):
     """View to add a new artist"""
 

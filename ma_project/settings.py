@@ -30,6 +30,7 @@ ALLOWED_HOSTS = []
 # My settings.
 LOGIN_REDIRECT_URL = 'music_app:index'
 LOGOUT_REDIRECT_URL = 'music_app:index'
+LOGIN_URL = 'accounts:login'
 
 # Application definition
 
