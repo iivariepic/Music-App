@@ -17,7 +17,11 @@
         {% endif %}
         <li>Average Score: {{ track.get_avg_score }}/10</li>
         {% if user.is_staff %}
-        <li><a href="{% url 'music_app:delete_track' track_id=track.id %}">
+            <br>
+            <li><a href="{% url 'music_app:edit_track' track_id=track.id %}">
+                Edit Track
+            </a></li><br>
+            <li><a href="{% url 'music_app:delete_track' track_id=track.id %}">
                 Delete Track
             </a></li><br>
         {% endif %}
