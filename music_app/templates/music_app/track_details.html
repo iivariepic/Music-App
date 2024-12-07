@@ -1,0 +1,31 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    <h1>{{ track.name }}</h1>
+        <li>Title: <strong>{{ track.name }}</strong></li><br>
+        <li>Length: {{ track.get_length }}</li><br>
+        <li><a href="{% url 'music_app:artist_albums' artist_id=track.artist.id %}">
+            Artist: {{ track.artist }}
+        </a></li><br>
+        <li>Release Year: {{ track.release_year }}</li><br>
+        {% if track.album %}
+            <li><a href="{% url 'music_app:track_list' album_id=track.album.id %}">
+                Album: {{ track.album.name }} | {{ track.album.release_year }}
+            </a></li>
+        {% else %}
+            <li>Album: None (Single)</li>
+        {% endif %}
+    </ul>
+    <h1>Reviews for {{ track.name }}</h1>
+    <h2><a href="{% url 'music_app:add_review' type='track' obj_id=track.id %}">Review This Track</a></h2>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
+                {{ review.content }}<br>
+                {{ review.date_created }}
+
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

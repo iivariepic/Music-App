@@ -5,7 +5,9 @@
     <ul>
         {% for track in tracks %}
             <li>
-                <strong>{{ track.name }}</strong> | {{ track.get_length }}<br>
+                <a href="{% url 'music_app:track_details' track_id=track.id %}">
+                    <strong>{{ track.name }}</strong> | {{ track.get_length }}<br>
+                </a>
             </li>
         {% endfor %}
     </ul>
@@ -16,7 +18,8 @@
         {% for review in reviews %}
             <li>
                 <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
-                {{ review.content }}
+                {{ review.content }}<br>
+                {{ review.date_created }}
 
             </li>
         {% endfor %}

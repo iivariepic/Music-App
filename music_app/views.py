@@ -81,6 +81,13 @@ def artist_albums(request, artist_id):
                   {'artist': artist, 'albums': albums,
                    'singles': singles})
 
+def track_details(request, track_id):
+    """View to display specific track details"""
+    track = get_object_or_404(Track, id=track_id)
+    reviews = filter_reviews(request, track)
+    return render(request, 'music_app/track_details.html',
+                  {'track': track, 'reviews': reviews})
+
 
 def add_track(request, artist_id, album_id):
     """View to add a new track to a specific artist"""
@@ -95,7 +102,7 @@ def add_track(request, artist_id, album_id):
 
     artist = get_object_or_404(Artist, id=artist_id)
     if request.method == 'POST':
-        form = TrackForm(request.POST)
+        form = TrackForm(request.POST, artist=artist)
         if form.is_valid():
             track = form.save(commit=False)
             track.artist = artist
@@ -140,7 +147,10 @@ def add_review(request, type, obj_id):
             review.object_id = object.id
             review.creator = request.user
             review.save()
-            return redirect('music_app:track_list', album_id=obj_id)
+            if type=='album':
+                return redirect('music_app:track_list', album_id=obj_id)
+            else:
+                return redirect('music_app:track_details', track_id=object.id)
     else:
         form = ReviewForm()
     return render(request, 'music_app/add_review.html',
