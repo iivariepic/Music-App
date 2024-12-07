@@ -5,7 +5,32 @@ from django.db.models import Q
 from .models import Album, Track, Artist, Review
 from .forms import AlbumForm, TrackForm, ArtistForm, ReviewForm
 
+def filter_reviews(request, target_object):
+    # Get the ContentType for the model
+    object_content_type = ContentType.objects.get_for_model(target_object)
 
+    if request.user.is_authenticated:
+        # Show all public reviews and the user's own private review
+        reviews = Review.objects.filter(
+            content_type=object_content_type,
+            object_id=target_object.id
+        ).filter(
+            Q(is_public=True) | Q(creator=request.user)
+        ).distinct()
+
+        # Separate user's own review
+        user_review = reviews.filter(creator=request.user).first()
+        if user_review:
+            reviews = [user_review] + list(reviews.exclude(id=user_review.id))
+    else:
+        # Show only public reviews for unauthenticated users
+        reviews = Review.objects.filter(
+            content_type=object_content_type,
+            object_id=target_object.id,
+            is_public=True
+        )
+
+    return reviews
 def index(request):
     """Home page for music app"""
     return render(request, 'music_app/index.html')
@@ -20,30 +45,8 @@ def track_list(request, album_id):
     album = get_object_or_404(Album, id=album_id)
     tracks = Track.objects.filter(album=album)
 
-    # Get the ContentType for the Album model
-    album_content_type = ContentType.objects.get_for_model(Album)
-
     # Filter reviews for the album
-    if request.user.is_authenticated:
-        # Show all public reviews and the user's own private review
-        reviews = Review.objects.filter(
-            content_type=album_content_type,
-            object_id=album.id
-        ).filter(
-            Q(is_public=True) | Q(creator=request.user)
-        ).distinct()
-
-        # Separate user's own review
-        user_review = reviews.filter(creator=request.user).first()
-        if user_review:
-            reviews = [user_review] + list(reviews.exclude(id=user_review.id))
-    else:
-        # Show only public reviews for unauthenticated users
-        reviews = Review.objects.filter(
-            content_type=album_content_type,
-            object_id=album.id,
-            is_public=True
-        )
+    reviews = filter_reviews(request, album)
 
     return render(request, 'music_app/tracks.html', {
         'tracks': tracks,
