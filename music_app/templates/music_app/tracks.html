@@ -1,6 +1,14 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
+    <h1>Album Information</h1>
+    <li>Title: <strong>{{ album.name }}</strong></li><br>
+    <li><a href="{% url 'music_app:artist_albums' artist_id=album.artist.id %}">
+        Artist: {{ album.artist }}</a></li><br>
+    <li>Release year: {{ album.release_year }}</li><br>
+    <li>Date added to site: {{ album.date_added }}</li><br>
+    <li>Average score: {{ album.get_avg_score }}/10</li>
+    
     <h1>Tracks from {{ album.name }} by {{ album.artist.name }}</h1>
     <ul>
         {% for track in tracks %}

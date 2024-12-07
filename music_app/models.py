@@ -35,6 +35,19 @@ class Album(models.Model):
         """Return string representation of the Album"""
         return self.name + " - " + self.artist.name
 
+    def get_avg_score(self):
+        """Method to get average score of album"""
+        reviews = Review.objects.filter(
+            content_type= ContentType.objects.get_for_model(self),
+            object_id=self.id)
+        if len(reviews) == 0:
+            return 0
+        else:
+            combined_sum = 0
+            for review in reviews:
+                combined_sum += review.rating
+            return combined_sum / len(reviews)
+
 
 
 class Track(models.Model):
@@ -59,6 +72,19 @@ class Track(models.Model):
         seconds = self.length % 60
         result = f"{minutes}:{seconds:02}"
         return result
+
+    def get_avg_score(self):
+        """Method to get average score of track"""
+        reviews = Review.objects.filter(
+            content_type= ContentType.objects.get_for_model(self),
+            object_id=self.id)
+        if len(reviews) == 0:
+            return 0
+        else:
+            combined_sum = 0
+            for review in reviews:
+                combined_sum += review.rating
+            return combined_sum / len(reviews)
 
 
 class Review(models.Model):
