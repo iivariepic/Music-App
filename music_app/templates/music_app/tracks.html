@@ -9,6 +9,16 @@
             </li>
         {% endfor %}
     </ul>
-    <h2><a href="{% url 'music_app:add_review' type='album' obj_id=album.id %}">Review This Album</a></h2>
     <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}">Add New Track</a></h2>
+    <h1>Reviews for {{ album }}</h1>
+    <h2><a href="{% url 'music_app:add_review' type='album' obj_id=album.id %}">Review This Album</a></h2>
+    <ul>
+        {% for review in reviews %}
+            <li>
+                <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
+                {{ review.content }}
+
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}

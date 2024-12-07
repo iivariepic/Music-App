@@ -1,7 +1,8 @@
 from PyInstaller.utils.win32.winresource import add_or_update_resource
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
-from .models import Album, Track, Artist
+from django.db.models import Q
+from .models import Album, Track, Artist, Review
 from .forms import AlbumForm, TrackForm, ArtistForm, ReviewForm
 
 
@@ -18,7 +19,37 @@ def track_list(request, album_id):
     """View to display tracks from a specific album"""
     album = get_object_or_404(Album, id=album_id)
     tracks = Track.objects.filter(album=album)
-    return render(request, 'music_app/tracks.html', {'tracks': tracks, 'album': album})
+
+    # Get the ContentType for the Album model
+    album_content_type = ContentType.objects.get_for_model(Album)
+
+    # Filter reviews for the album
+    if request.user.is_authenticated:
+        # Show all public reviews and the user's own private review
+        reviews = Review.objects.filter(
+            content_type=album_content_type,
+            object_id=album.id
+        ).filter(
+            Q(is_public=True) | Q(creator=request.user)
+        ).distinct()
+
+        # Separate user's own review
+        user_review = reviews.filter(creator=request.user).first()
+        if user_review:
+            reviews = [user_review] + list(reviews.exclude(id=user_review.id))
+    else:
+        # Show only public reviews for unauthenticated users
+        reviews = Review.objects.filter(
+            content_type=album_content_type,
+            object_id=album.id,
+            is_public=True
+        )
+
+    return render(request, 'music_app/tracks.html', {
+        'tracks': tracks,
+        'album': album,
+        'reviews': reviews,
+    })
 
 def add_album(request):
     """View to add a new album"""
