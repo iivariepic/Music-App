@@ -13,9 +13,8 @@ class TrackForm(forms.ModelForm):
         model = Track
         fields = ['name', 'length', 'album', 'release_year']
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, artist, **kwargs):
         super().__init__(*args, **kwargs)
-        artist = kwargs.pop('artist')
         self.fields['album'].empty_label = "None (Single)"  # Add an option for singles
         self.fields['album'].required = False  # Make the album field not required
 
