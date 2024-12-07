@@ -6,7 +6,7 @@
         {% for track in tracks %}
             <li>
                 <a href="{% url 'music_app:track_details' track_id=track.id %}">
-                    {{ track.name }} - {{ track.artist.name }} ({{ track.release_year }}) | {{ track.get_avg_score }}
+                    {{ track.name }} - {{ track.artist.name }} ({{ track.release_year }}) | {{ track.get_avg_score }}/10
                 </a>
             </li>
         {% endfor %}
