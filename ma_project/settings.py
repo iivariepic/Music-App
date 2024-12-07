@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # My apps.
     'music_app',
+    'accounts',
 
     # Default django apps.
     'django.contrib.admin',
