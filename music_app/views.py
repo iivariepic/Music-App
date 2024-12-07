@@ -43,10 +43,19 @@ def sort_by_score(things:QuerySet):
         for other_thing in result:
             if other_thing != thing:
                 if thing.get_avg_score() > other_thing.get_avg_score():
+                    # Move ahead if score is higher
                     original_idx = result.index(thing)
                     other_idx = result.index(other_thing)
                     result.insert(other_idx, result.pop(original_idx))
                     break
+
+                elif thing.get_avg_score() == other_thing.get_avg_score():
+                    # Sort alphabetically if score is equal
+                    if thing.name < other_thing.name:
+                        original_idx = result.index(thing)
+                        other_idx = result.index(other_thing)
+                        result.insert(other_idx, result.pop(original_idx))
+                        break
 
     return result
 
