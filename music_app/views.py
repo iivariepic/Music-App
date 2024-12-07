@@ -44,7 +44,15 @@ def artist_albums(request, artist_id):
                    'singles': singles})
 
 
-def add_track(request, artist_id):
+def add_track(request, artist_id, album_id):
+    initial_data = {}
+    if album_id != 0:  # Check if an album is provided
+        album = get_object_or_404(Album, id=album_id)
+        initial_data = {
+            'album': album.id,
+            'release_year': album.release_year,
+        }
+
     """View to add a new track to a specific artist"""
     artist = get_object_or_404(Artist, id=artist_id)
     if request.method == 'POST':
@@ -61,7 +69,7 @@ def add_track(request, artist_id):
                 return redirect('music_app:artist_albums', artist_id=artist.id)
 
     else:
-        form = TrackForm()
+        form = TrackForm(initial=initial_data)
     return render(request, 'music_app/add_track.html', {'form': form, 'artist': artist})
 
 

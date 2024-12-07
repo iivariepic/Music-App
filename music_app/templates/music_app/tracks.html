@@ -12,5 +12,5 @@
             </li>
         {% endfor %}
     </ul>
-    <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id %}">Add New Track</a></h2>
+    <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}">Add New Track</a></h2>
 {% endblock %}
