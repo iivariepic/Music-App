@@ -14,6 +14,10 @@ class Artist(models.Model):
         """Return string representation of Artist"""
         return self.name
 
+    def get_singles(self):
+        """Method to get all singles (albumless songs) from an artist"""
+        return Track.objects.filter(artist=self, album__isnull=True)
+
 
 
 class Album(models.Model):
@@ -30,6 +34,7 @@ class Album(models.Model):
     def __str__(self):
         """Return string representation of the Album"""
         return self.name + " - " + self.artist.name
+
 
 
 class Track(models.Model):

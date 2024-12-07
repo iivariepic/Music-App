@@ -3,12 +3,27 @@
 {% block content %}
     <h1>Albums by {{ artist.name }}</h1>
     <ul>
-        {% for album in albums %}
-            <li>
-                <a href="{% url 'music_app:track_list' album_id=album.id %}">
-                    {{ album.name }} ({{ album.release_year }})
-                </a>
-            </li>
-        {% endfor %}
+        {% if albums %}
+            {% for album in albums %}
+                <li>
+                    <a href="{% url 'music_app:track_list' album_id=album.id %}">
+                        {{ album.name }} | {{ album.release_year }}
+                    </a>
+                </li>
+            {% endfor %}
+        {% else %}
+            <li>No albums available for this artist.</li>
+        {% endif %}
+    </ul>
+
+    <h1>Singles by {{ artist.name }}</h1>
+    <ul>
+        {% if singles %}
+            {% for single in singles %}
+                <li>{{ single.str }}</li>
+            {% endfor %}
+        {% else %}
+            <li>No singles available for this artist.</li>
+        {% endif %}
     </ul>
 {% endblock %}

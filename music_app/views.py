@@ -35,10 +35,13 @@ def artist_list(request):
     return render(request, 'music_app/artist.html', {'artists': artists})
 
 def artist_albums(request, artist_id):
-    """View to display albums of a specific artist"""
+    """View to display albums and singles of a specific artist"""
     artist = get_object_or_404(Artist, id=artist_id)
     albums = Album.objects.filter(artist=artist)
-    return render(request, 'music_app/artist_albums.html', {'artist': artist, 'albums': albums})
+    singles = artist.get_singles()
+    return render(request, 'music_app/artist_albums.html',
+                  {'artist': artist, 'albums': albums,
+                   'singles': singles})
 
 
 
