@@ -7,7 +7,7 @@
             <li>
                 <strong>{{ track.name }}</strong><br>
                 Artist: {{ track.artist.name }}<br>
-                Length: {{ track.length }} seconds<br>
+                Length: {{ track.getMinLength }}<br>
                 Release Year: {{ track.release_year }}<br>
             </li>
         {% endfor %}

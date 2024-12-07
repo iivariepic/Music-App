@@ -49,6 +49,12 @@ class Track(models.Model):
     def __str__(self):
         return self.name + " | " + self.artist.name
 
+    def getMinLength(self):
+        minutes = self.length // 60
+        seconds = self.length % 60
+        result = f"{minutes}:{seconds:02}"
+        return result
+
 
 class Review(models.Model):
     """A model for reviews of a track or an album"""
