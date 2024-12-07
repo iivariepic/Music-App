@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # My settings.
-LOGIN_URL = 'music_app:index'
+LOGIN_REDIRECT_URL = 'music_app:index'
 
 # Application definition
 
