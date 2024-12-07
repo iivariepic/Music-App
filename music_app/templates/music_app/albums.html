@@ -11,5 +11,7 @@
             </li>
         {% endfor %}
     </ul>
+    {% if user.is_staff %}
     <h2><a href="{% url 'music_app:add_album' %}">Add New Album</a></h2>
+    {% endif %}
 {% endblock %}

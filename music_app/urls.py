@@ -16,4 +16,7 @@ urlpatterns = [
     path('add_review/<str:type>/<int:obj_id>', views.add_review, name='add_review'),
     path('edit_review/<int:review_id>/', views.edit_review, name='edit_review'),
     path('delete_review/<int:review_id>/', views.delete_review, name='delete_review'),
+    path('delete_album/<int:album_id>/', views.delete_album, name='delete_album'),
+    path('delete_track/<int:track_id>/', views.delete_track, name='delete_track'),
+    path('delete_artist/<int:artist_id>/', views.delete_artist, name='delete_artist'),
 ]

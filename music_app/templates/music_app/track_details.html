@@ -16,6 +16,11 @@
             <li>Album: None (Single)</li><br>
         {% endif %}
         <li>Average Score: {{ track.get_avg_score }}/10</li>
+        {% if user.is_staff %}
+        <li><a href="{% url 'music_app:delete_track' track_id=track.id %}">
+                Delete Track
+            </a></li><br>
+        {% endif %}
     </ul>
     <h1>Reviews for {{ track.name }}</h1>
     <h2><a href="{% url 'music_app:add_review' type='track' obj_id=track.id %}">Review This Track</a></h2>
@@ -29,7 +34,7 @@
                      |
                     <a href="{% url 'music_app:edit_review' review.id %}">
                         Edit Review
-                    </a> | 
+                    </a> |
                     <a href="{% url 'music_app:delete_review' review.id %}" class="delete-review">
                         Delete Review
                     </a>

@@ -15,7 +15,9 @@
             <li>No albums available for this artist.</li>
         {% endif %}
     </ul>
-    <h2><a href="{% url 'music_app:add_album' %}">Add New Album</a></h2>
+    {% if user.is_staff %}
+        <h2><a href="{% url 'music_app:add_album' %}">Add New Album</a></h2>
+    {% endif %}
     
     <h1>Singles by {{ artist.name }}</h1>
     <ul>
@@ -29,5 +31,7 @@
             <li>No singles available for this artist.</li>
         {% endif %}
     </ul>
+    {% if user.is_staff %}
         <h2><a href="{% url 'music_app:add_track' artist_id=artist.id album_id=0 %}">Add New Single</a></h2>
+    {% endif %}
 {% endblock %}

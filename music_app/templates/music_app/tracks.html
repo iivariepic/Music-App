@@ -8,6 +8,11 @@
     <li>Release year: {{ album.release_year }}</li><br>
     <li>Date added to site: {{ album.date_added }}</li><br>
     <li>Average score: {{ album.get_avg_score }}/10</li>
+    {% if user.is_staff %}
+        <li><a href="{% url 'music_app:delete_album' album_id=album.id %}">
+            Delete Album
+            </a></li><br>
+        {% endif %}
 
     <h1>Tracks from {{ album.name }} by {{ album.artist.name }}</h1>
     <ul>
@@ -19,7 +24,10 @@
             </li>
         {% endfor %}
     </ul>
-    <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}">Add New Track</a></h2>
+    {% if user.is_staff %}
+        <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}">Add New Track</a></h2>
+    {% endif %}
+    
     <h1>Reviews for {{ album }}</h1>
     <h2><a href="{% url 'music_app:add_review' type='album' obj_id=album.id %}">Review This Album</a></h2>
     <ul>

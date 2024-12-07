@@ -1,6 +1,6 @@
 from PyInstaller.utils.win32.winresource import add_or_update_resource
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
@@ -8,6 +8,8 @@ from django.db.models import Q, QuerySet
 from .models import Album, Track, Artist, Review
 from .forms import AlbumForm, TrackForm, ArtistForm, ReviewForm
 
+def is_staff(user):
+    return user.is_staff
 
 def filter_reviews(request, target_object):
     # Get the ContentType for the model
@@ -92,6 +94,7 @@ def track_list(request, album_id):
     })
 
 @login_required
+@user_passes_test(is_staff)
 def add_album(request):
     """View to add a new album"""
     if request.method == 'POST':
@@ -126,6 +129,7 @@ def track_details(request, track_id):
 
 
 @login_required
+@user_passes_test(is_staff)
 def add_track(request, artist_id, album_id):
     """View to add a new track to a specific artist"""
 
@@ -157,6 +161,7 @@ def add_track(request, artist_id, album_id):
 
 
 @login_required
+@user_passes_test(is_staff)
 def add_artist(request):
     """View to add a new artist"""
     if request.method == 'POST':
@@ -195,6 +200,7 @@ def add_review(request, type, obj_id):
     return render(request, 'music_app/add_review.html',
                   {'form': form, 'type': type, 'object': object})
 
+@login_required
 def edit_review(request, review_id):
     """Edit an existing review"""
     review = get_object_or_404(Review, id=review_id)
@@ -237,3 +243,26 @@ def delete_review(request, review_id):
     else:
         # Optionally, show a message or redirect to an error page
         raise Http404
+
+@login_required
+@user_passes_test(is_staff)
+def delete_album(request, album_id):
+    album = get_object_or_404(Album, id=album_id)
+
+    album.delete()
+    return redirect('music_app:album_list')
+
+@login_required
+@user_passes_test(is_staff)
+def delete_track(request, track_id):
+    track = get_object_or_404(Track, id=track_id)
+    artist_id = track.artist.id
+    track.delete()
+    return redirect('music_app:artist_albums', artist_id=artist_id)
+
+@login_required
+@user_passes_test(is_staff)
+def delete_artist(request, artist_id):
+    artist = get_object_or_404(Artist, id=artist_id)
+    artist.delete()
+    return redirect('music_app:artist_list')
