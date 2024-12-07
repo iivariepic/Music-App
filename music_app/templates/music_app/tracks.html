@@ -19,10 +19,13 @@
             <li>
                 <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
                 {{ review.content }}<br>
-                {{ review.date_created }} | 
-            <a href="{% url 'music_app:edit_review' review.id %}">
-                Edit Review
-            </a>
+                {{ review.date_created }}
+                {% if review.creator.id == user.id %}
+                     | 
+                    <a href="{% url 'music_app:edit_review' review.id %}">
+                        Edit Review
+                    </a>
+                {% endif %}
 
             </li>
         {% endfor %}

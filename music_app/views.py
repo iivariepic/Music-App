@@ -1,6 +1,7 @@
 from PyInstaller.utils.win32.winresource import add_or_update_resource
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
@@ -165,6 +166,9 @@ def add_review(request, type, obj_id):
 def edit_review(request, review_id):
     """Edit an existing review"""
     review = get_object_or_404(Review, id=review_id)
+
+    if request.user != review.creator:
+        raise Http404
 
     if request.method != 'POST':
         # Initial request; pre-fill form with the current review
