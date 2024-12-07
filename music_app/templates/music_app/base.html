@@ -11,10 +11,11 @@
         <h1>Music App</h1>
         <nav>
             <ul>
-                <a href="{% url 'music_app:index' %}">Home</a> - 
+                <a href="{% url 'music_app:index' %}">Home</a> -
                   {% if user.is_authenticated %}
                     Hello, {{ user.username }}.
                 {% else %}
+                    <a href="{% url 'accounts:register' %}">Register</a> - 
                     <a href="{% url 'accounts:login' %}">Log in </a>
                 {% endif %}
             </ul>
@@ -23,7 +24,7 @@
     <main>
         {% block content %}
         {% endblock %}
-    
+
         {% if user.is_authenticated %}
           <hr />
           <form action="{% url 'accounts:logout' %}" method="post">
