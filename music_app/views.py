@@ -161,3 +161,27 @@ def add_review(request, type, obj_id):
         form = ReviewForm()
     return render(request, 'music_app/add_review.html',
                   {'form': form, 'type': type, 'object': object})
+
+def edit_review(request, review_id):
+    """Edit an existing review"""
+    review = get_object_or_404(Review, id=review_id)
+
+    if request.method != 'POST':
+        # Initial request; pre-fill form with the current review
+        form = ReviewForm(instance=review)
+    else:
+        # POST data submitted, process data
+        form = ReviewForm(instance=review, data=request.POST)
+        if form.is_valid():
+            form.save()
+            if review.content_type == ContentType.objects.get_for_model(Album):
+                return redirect('music_app:track_list', album_id=review.object_id)
+            else:
+                return redirect('music_app:track_details', track_id=review.object_id)
+
+    context = {'review': review,
+               'type': review.content_type.name.lower(),
+               'object': get_object_or_404(review.content_type.model_class(),
+                                           id=review.object_id),
+               'form': form}
+    return render(request, 'music_app/edit_review.html', context)

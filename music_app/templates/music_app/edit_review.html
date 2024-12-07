@@ -1,0 +1,21 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    {% if type == "album" %}
+        <p><a href="{% url 'music_app:track_list' object.id %}">
+            {{ type|title }}
+        </a></p>
+    {% else %}
+        <p><a href="{% url 'music_app:track_details' object.id %}">
+            {{ type|title }}
+        </a></p>
+    {% endif %}
+
+    <div>Edit review:</div>
+
+    <form action="{% url 'music_app:edit_review' review.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button name="submit">Save changes</button>
+    </form>
+{% endblock content %}

@@ -19,7 +19,10 @@
             <li>
                 <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
                 {{ review.content }}<br>
-                {{ review.date_created }}
+                {{ review.date_created }} | 
+            <a href="{% url 'music_app:edit_review' review.id %}">
+                Edit Review
+            </a>
 
             </li>
         {% endfor %}
