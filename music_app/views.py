@@ -102,6 +102,7 @@ def add_review(request, type, obj_id):
             review = form.save(commit=False)
             review.content_type = ContentType.objects.get_for_model(object)
             review.object_id = object.id
+            review.creator = request.user
             review.save()
             return redirect('music_app:track_list', album_id=obj_id)
     else:
