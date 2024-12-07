@@ -1,6 +1,11 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
+    {% if user.is_staff %}
+        <li><a href="{% url 'music_app:edit_artist' artist_id=artist.id %}">
+            Edit Artist
+        </a></li>
+    {% endif %}
     <h1>Albums by {{ artist.name }}</h1>
     <ul>
         {% if albums %}

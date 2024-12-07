@@ -306,3 +306,23 @@ def edit_track(request, track_id):
     context = {'track': track,
                'form': form}
     return render(request, 'music_app/edit_track.html', context)
+
+@login_required
+@user_passes_test(is_staff)
+def edit_artist(request, artist_id):
+    """Edit an existing artist"""
+    artist = get_object_or_404(Artist, id=artist_id)
+
+    if request.method != 'POST':
+        # Initial request; pre-fill form with the current review
+        form = ArtistForm(instance=artist)
+    else:
+        # POST data submitted, process data
+        form = ArtistForm(instance=artist, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('music_app:artist_albums', artist_id=artist.id)
+
+    context = {'artist': artist,
+               'form': form}
+    return render(request, 'music_app/edit_artist.html', context)
