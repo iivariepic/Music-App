@@ -8,7 +8,7 @@
     <li>Release year: {{ album.release_year }}</li><br>
     <li>Date added to site: {{ album.date_added }}</li><br>
     <li>Average score: {{ album.get_avg_score }}/10</li>
-    
+
     <h1>Tracks from {{ album.name }} by {{ album.artist.name }}</h1>
     <ul>
         {% for track in tracks %}
@@ -29,9 +29,12 @@
                 {{ review.content }}<br>
                 {{ review.date_created }}
                 {% if review.creator.id == user.id %}
-                     | 
+                     |
                     <a href="{% url 'music_app:edit_review' review.id %}">
                         Edit Review
+                    </a> |
+                    <a href="{% url 'music_app:delete_review' review.id %}" class="delete-review">
+                        Delete Review
                     </a>
                 {% endif %}
 

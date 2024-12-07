@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from .models import Album, Track, Artist, Review
 from .forms import AlbumForm, TrackForm, ArtistForm, ReviewForm
 
@@ -36,14 +36,37 @@ def filter_reviews(request, target_object):
 
     return reviews
 
+def sort_by_score(things:QuerySet):
+    """Function to sort albums or tracks by score"""
+    result = list(things)
+    for thing in result:
+        for other_thing in result:
+            if other_thing != thing:
+                if thing.get_avg_score() > other_thing.get_avg_score():
+                    original_idx = result.index(thing)
+                    other_idx = result.index(other_thing)
+                    result.insert(other_idx, result.pop(original_idx))
+                    break
+
+    return result
+
 def index(request):
     """Home page for music app"""
     return render(request, 'music_app/index.html')
 
 def album_list(request):
-    """View to display all albums"""
-    albums = Album.objects.all()
+    """View to display all albums and sort them by score"""
+    # Retrieve all albums and order them by score
+    albums = sort_by_score(Album.objects.all())
+
     return render(request, 'music_app/albums.html', {'albums': albums})
+
+def top_tracks_list(request):
+    """View to display all albums and sort them by score"""
+    # Retrieve all albums and order them by score
+    tracks = sort_by_score(Track.objects.all())
+
+    return render(request, 'music_app/top_rated_tracks.html', {'tracks': tracks})
 
 def track_list(request, album_id):
     """View to display tracks from a specific album"""
@@ -189,3 +212,19 @@ def edit_review(request, review_id):
                                            id=review.object_id),
                'form': form}
     return render(request, 'music_app/edit_review.html', context)
+
+
+@login_required
+def delete_review(request, review_id):
+    review = get_object_or_404(Review, id=review_id)
+
+    # Ensure the user is the creator of the review
+    if request.user == review.creator:
+        review.delete()  # Deletes the review
+        if review.content_type == ContentType.objects.get_for_model(Album):
+            return redirect('music_app:track_list', album_id=review.object_id)
+        else:
+            return redirect('music_app:track_details', track_id=review.object_id)
+    else:
+        # Optionally, show a message or redirect to an error page
+        raise Http404

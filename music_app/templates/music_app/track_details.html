@@ -29,6 +29,9 @@
                      |
                     <a href="{% url 'music_app:edit_review' review.id %}">
                         Edit Review
+                    </a> | 
+                    <a href="{% url 'music_app:delete_review' review.id %}" class="delete-review">
+                        Delete Review
                     </a>
                 {% endif %}
             </li>

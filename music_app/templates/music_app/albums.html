@@ -1,12 +1,12 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
-    <h1>Albums</h1>
+    <h1>Albums sorted by score</h1>
     <ul>
         {% for album in albums %}
             <li>
                 <a href="{% url 'music_app:track_list' album_id=album.id %}">
-                    {{ album.name }} - {{ album.artist.name }} ({{ album.release_year }})
+                    {{ album.name }} - {{ album.artist.name }} ({{ album.release_year }}) | {{ album.get_avg_score }}
                 </a>
             </li>
         {% endfor %}
