@@ -9,6 +9,10 @@
     <li>Date added to site: {{ album.date_added }}</li><br>
     <li>Average score: {{ album.get_avg_score }}/10</li>
     {% if user.is_staff %}
+        <br>
+        <li><a href="{% url 'music_app:edit_album' album_id=album.id %}">
+            Edit Album
+            </a></li><br>
         <li><a href="{% url 'music_app:delete_album' album_id=album.id %}">
             Delete Album
             </a></li><br>

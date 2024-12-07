@@ -266,3 +266,23 @@ def delete_artist(request, artist_id):
     artist = get_object_or_404(Artist, id=artist_id)
     artist.delete()
     return redirect('music_app:artist_list')
+
+@login_required
+@user_passes_test(is_staff)
+def edit_album(request, album_id):
+    """Edit an existing album"""
+    album = get_object_or_404(Album, id=album_id)
+
+    if request.method != 'POST':
+        # Initial request; pre-fill form with the current review
+        form = AlbumForm(instance=album)
+    else:
+        # POST data submitted, process data
+        form = AlbumForm(instance=album, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('music_app:album_list')
+
+    context = {'album': album,
+               'form': form}
+    return render(request, 'music_app/edit_album.html', context)

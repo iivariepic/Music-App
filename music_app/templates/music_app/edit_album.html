@@ -1,0 +1,12 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+
+    <div>Edit album: {{ album.name }} ({{ album.id }})</div>
+
+    <form action="{% url 'music_app:edit_album' album.id %}" method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <button name="submit">Save changes</button>
+    </form>
+{% endblock content %}
