@@ -5,6 +5,7 @@ from django.db.models import Q
 from .models import Album, Track, Artist, Review
 from .forms import AlbumForm, TrackForm, ArtistForm, ReviewForm
 
+
 def filter_reviews(request, target_object):
     # Get the ContentType for the model
     object_content_type = ContentType.objects.get_for_model(target_object)
@@ -31,6 +32,7 @@ def filter_reviews(request, target_object):
         )
 
     return reviews
+
 def index(request):
     """Home page for music app"""
     return render(request, 'music_app/index.html')
