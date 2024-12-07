@@ -1,6 +1,8 @@
+from PyInstaller.utils.win32.winresource import add_or_update_resource
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.contenttypes.models import ContentType
 from .models import Album, Track, Artist
-from .forms import AlbumForm, TrackForm, ArtistForm
+from .forms import AlbumForm, TrackForm, ArtistForm, ReviewForm
 
 
 def index(request):
@@ -84,3 +86,25 @@ def add_artist(request):
     else:
         form = ArtistForm()
     return render(request, 'music_app/add_artist.html', {'form': form})
+
+
+def add_review(request, type, obj_id):
+    """View to add a new artist"""
+
+    if type=='album':
+        object = get_object_or_404(Album, id=obj_id)
+    else:
+        object = get_object_or_404(Track, id=obj_id)
+
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.content_type = ContentType.objects.get_for_model(object)
+            review.object_id = object.id
+            review.save()
+            return redirect('music_app:track_list', album_id=obj_id)
+    else:
+        form = ReviewForm()
+    return render(request, 'music_app/add_review.html',
+                  {'form': form, 'type': type, 'object': object})

@@ -1,0 +1,10 @@
+{% extends "music_app/base.html" %}
+
+{% block content %}
+    <h1>Review for the {{ type }}, {{ object.name }}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Add Review</button>
+    </form>
+{% endblock %}

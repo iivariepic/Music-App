@@ -5,12 +5,10 @@
     <ul>
         {% for track in tracks %}
             <li>
-                <strong>{{ track.name }}</strong><br>
-                Artist: {{ track.artist.name }}<br>
-                Length: {{ track.get_length }}<br>
-                Release Year: {{ track.release_year }}<br>
+                <strong>{{ track.name }}</strong> | {{ track.get_length }}<br>
             </li>
         {% endfor %}
     </ul>
+    <h2><a href="{% url 'music_app:add_review' type='album' obj_id=album.id %}">Review This Album</a></h2>
     <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}">Add New Track</a></h2>
 {% endblock %}
