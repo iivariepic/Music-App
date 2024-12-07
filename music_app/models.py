@@ -54,7 +54,7 @@ class Track(models.Model):
     def __str__(self):
         return self.name + " | " + self.artist.name
 
-    def getMinLength(self):
+    def get_length(self):
         minutes = self.length // 60
         seconds = self.length % 60
         result = f"{minutes}:{seconds:02}"
