@@ -1,5 +1,3 @@
-from PyInstaller.utils.win32.winresource import add_or_update_resource
-from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import Http404
 from django.shortcuts import render, redirect, get_object_or_404
