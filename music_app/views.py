@@ -44,20 +44,26 @@ def artist_albums(request, artist_id):
                    'singles': singles})
 
 
-
-def add_track(request, album_id):
-    """View to add a new track to a specific album"""
-    album = get_object_or_404(Album, id=album_id)
+def add_track(request, artist_id):
+    """View to add a new track to a specific artist"""
+    artist = get_object_or_404(Artist, id=artist_id)
     if request.method == 'POST':
         form = TrackForm(request.POST)
         if form.is_valid():
             track = form.save(commit=False)
-            track.album = album
+            track.artist = artist
             track.save()
-            return redirect('music_app:track_list', album_id=album.id)
+
+            album = form.cleaned_data.get('album')
+            if album is not None:  # Check if an album is selected
+                return redirect('music_app:track_list', album_id=album.id)
+            else:
+                return redirect('music_app:artist_albums', artist_id=artist.id)
+
     else:
-        form = TrackForm(initial={'album': album})
-    return render(request, 'music_app/add_track.html', {'form': form, 'album': album})
+        form = TrackForm()
+    return render(request, 'music_app/add_track.html', {'form': form, 'artist': artist})
+
 
 def add_artist(request):
     """View to add a new artist"""

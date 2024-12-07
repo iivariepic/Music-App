@@ -21,10 +21,11 @@
     <ul>
         {% if singles %}
             {% for single in singles %}
-                <li>{{ single.str }}</li>
+                <li>{{ single.name }} | {{ single.release_year }}</li>
             {% endfor %}
         {% else %}
             <li>No singles available for this artist.</li>
         {% endif %}
     </ul>
+        <h2><a href="{% url 'music_app:add_track' artist_id=artist.id %}">Add New Single</a></h2>
 {% endblock %}

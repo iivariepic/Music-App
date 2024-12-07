@@ -11,7 +11,12 @@ class AlbumForm(forms.ModelForm):
 class TrackForm(forms.ModelForm):
     class Meta:
         model = Track
-        fields = ['name', 'length', 'artist', 'album']
+        fields = ['name', 'length', 'album', 'release_year']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['album'].empty_label = "None (Single)"  # Add an option for singles
+        self.fields['album'].required = False  # Make the album field not required
 
 
 class ArtistForm(forms.ModelForm):
