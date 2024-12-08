@@ -16,3 +16,4 @@ deactivate
 
 echo Setup complete! Virtual environment is ready.
 pause
+freeze
