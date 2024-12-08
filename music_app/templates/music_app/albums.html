@@ -1,17 +1,23 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
-    <h1>Albums sorted by score</h1>
-    <ul>
+<div class="container my-5 ">
+    <h1 class="text-center mb-4 text-light">Albums Sorted by Score</h1>
+    <ul class="list-group">
         {% for album in albums %}
-            <li>
-                <a href="{% url 'music_app:track_list' album_id=album.id %}">
-                    {{ album.name }} - {{ album.artist.name }} ({{ album.release_year }}) | {{ album.get_avg_score }}/10
-                </a>
-            </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{% url 'music_app:track_list' album_id=album.id %}" class="text-decoration-none">
+                <strong>{{ album.name }}</strong> 
+                <span class="text-muted">- {{ album.artist.name }} ({{ album.release_year }})</span>
+            </a>
+            <span class="badge bg-primary rounded-pill">{{ album.get_avg_score }}/10</span>
+        </li>
         {% endfor %}
     </ul>
     {% if user.is_staff %}
-    <h2><a href="{% url 'music_app:add_album' %}">Add New Album</a></h2>
+    <div class="text-center mt-4">
+        <a href="{% url 'music_app:add_album' %}" class="btn btn-primary">Add New Album</a>
+    </div>
     {% endif %}
+</div>
 {% endblock %}

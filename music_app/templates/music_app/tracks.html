@@ -1,56 +1,73 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
-    <h1>Album Information</h1>
-    <li>Title: <strong>{{ album.name }}</strong></li><br>
-    <li><a href="{% url 'music_app:artist_albums' artist_id=album.artist.id %}">
-        Artist: {{ album.artist }}</a></li><br>
-    <li>Release year: {{ album.release_year }}</li><br>
-    <li>Date added to site: {{ album.date_added }}</li><br>
-    <li>Average score: {{ album.get_avg_score }}/10</li>
-    {% if user.is_staff %}
-        <br>
-        <li><a href="{% url 'music_app:edit_album' album_id=album.id %}">
-            Edit Album
-            </a></li><br>
-        <li><a href="{% url 'music_app:delete_album' album_id=album.id %}">
-            Delete Album
-            </a></li><br>
-        {% endif %}
-
-    <h1>Tracks from {{ album.name }} by {{ album.artist.name }}</h1>
-    <ul>
-        {% for track in tracks %}
-            <li>
-                <a href="{% url 'music_app:track_details' track_id=track.id %}">
-                    <strong>{{ track.name }}</strong> | {{ track.get_length }}<br>
-                </a>
-            </li>
-        {% endfor %}
+<div class="container my-5">
+    <!-- Album Information Section -->
+    <h1 class="text-center mb-4 text-light">Album Information</h1>
+    <ul class="list-group">
+        <li class="list-group-item"><strong>Title:</strong> {{ album.name }}</li>
+        <li class="list-group-item">
+            <strong>Artist:</strong>
+            <a href="{% url 'music_app:artist_albums' artist_id=album.artist.id %}" class="text-decoration-none">
+                {{ album.artist }}
+            </a>
+        </li>
+        <li class="list-group-item"><strong>Release Year:</strong> {{ album.release_year }}</li>
+        <li class="list-group-item"><strong>Date Added:</strong> {{ album.date_added }}</li>
+        <li class="list-group-item"><strong>Average Score:</strong> {{ album.get_avg_score }}/10</li>
     </ul>
     {% if user.is_staff %}
-        <h2><a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}">Add New Track</a></h2>
+    <div class="d-flex justify-content-center gap-3 my-4">
+        <a href="{% url 'music_app:edit_album' album_id=album.id %}" class="btn btn-warning">Edit Album</a>
+        <a href="{% url 'music_app:delete_album' album_id=album.id %}" class="btn btn-danger">Delete Album</a>
+    </div>
     {% endif %}
-    
-    <h1>Reviews for {{ album }}</h1>
-    <h2><a href="{% url 'music_app:add_review' type='album' obj_id=album.id %}">Review This Album</a></h2>
-    <ul>
-        {% for review in reviews %}
-            <li>
-                <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
-                {{ review.content }}<br>
-                {{ review.date_created }}
-                {% if review.creator.id == user.id %}
-                     |
-                    <a href="{% url 'music_app:edit_review' review.id %}">
-                        Edit Review
-                    </a> |
-                    <a href="{% url 'music_app:delete_review' review.id %}" class="delete-review">
-                        Delete Review
-                    </a>
-                {% endif %}
 
-            </li>
+    <!-- Tracks Section -->
+    <h1 class="text-center my-4 text-light">Tracks from {{ album.name }} by {{ album.artist.name }}</h1>
+    <ul class="list-group mb-4">
+        {% for track in tracks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <a href="{% url 'music_app:track_details' track_id=track.id %}" class="text-decoration-none">
+                <strong>{{ track.name }}</strong>
+            </a>
+            <span class="text-muted">{{ track.get_length }}</span>
+        </li>
         {% endfor %}
     </ul>
+    {% if user.is_staff %}
+    <div class="text-center">
+        <a href="{% url 'music_app:add_track' artist_id=album.artist.id album_id=album.id %}" class="btn btn-success">
+            Add New Track
+        </a>
+    </div>
+    {% endif %}
+
+    <!-- Reviews Section -->
+    <h1 class="text-center my-4 text-light">Reviews for {{ album }}</h1>
+    <div class="text-center mb-4">
+        <a href="{% url 'music_app:add_review' type='album' obj_id=album.id %}" class="btn btn-primary">
+            Review This Album
+        </a>
+    </div>
+    <ul class="list-group">
+        {% for review in reviews %}
+        <li class="list-group-item">
+            <div class="d-flex justify-content-between">
+                <strong>{{ review.creator }} | {{ review.rating }}/10</strong>
+                <span class="text-muted">{{ review.date_created }}</span>
+            </div>
+            <p>{{ review.content }}</p>
+            {% if review.creator.id == user.id %}
+            <div class="d-flex justify-content-end gap-2">
+                <a href="{% url 'music_app:edit_review' review.id %}" class="btn btn-sm btn-warning">Edit</a>
+                <a href="{% url 'music_app:delete_review' review.id %}" class="btn btn-sm btn-danger delete-review">
+                    Delete
+                </a>
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
 {% endblock %}

@@ -1,23 +1,30 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
-    <h1>Artists</h1>
-    <ul>
+<div class="container my-5">
+    <h1 class="text-center mb-4 text-light">Artists</h1>
+    <ul class="list-group">
         {% for artist in artists %}
-            <li>
-                <a href="{% url 'music_app:artist_albums' artist_id=artist.id %}">
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            <div>
+                <a href="{% url 'music_app:artist_albums' artist_id=artist.id %}" class="text-decoration-none fw-bold">
                     {{ artist.name }}
                 </a>
-                {% if user.is_staff %}
-                 | 
-                <a href="{% url 'music_app:delete_artist' artist_id=artist.id %}">
-                Delete Artist
-                </a><br>
+            </div>
+            {% if user.is_staff %}
+            <div>
+                <a href="{% url 'music_app:delete_artist' artist_id=artist.id %}" class="btn btn-danger btn-sm">
+                    Delete
+                </a>
+            </div>
             {% endif %}
-            </li>
+        </li>
         {% endfor %}
     </ul>
     {% if user.is_staff %}
-        <h2><a href="{% url 'music_app:add_artist' %}">Add New Artist</a></h2>
-        {% endif %}
+    <div class="text-center mt-4">
+        <a href="{% url 'music_app:add_artist' %}" class="btn btn-primary">Add New Artist</a>
+    </div>
+    {% endif %}
+</div>
 {% endblock %}

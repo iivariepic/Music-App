@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # My apps.
     'music_app',
     'accounts',
+    'bootstrap5',
 
     # Default django apps.
     'django.contrib.admin',

@@ -1,12 +1,47 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
-    <h2>Welcome to the Music App Home Page</h2>
-    <p>This is the home page content.</p>
-    <ul>
-        <li><a href="{% url 'music_app:album_list' %}">Top Rated Albums</a></li>
-        <li><a href="{% url 'music_app:top_tracks_list' %}">Top Rated Tracks</a></li>
-        <li><a href="{% url 'music_app:artist_list' %}">Artists</a></li>  <!-- Update this line -->
-        
-    </ul>
+<div class="container my-5">
+    <h1 class="text-center mb-4 text-light">Music App</h1>
+    <h2 class="text-center mb-4 text-info">Welcome to the Music App Home Page</h2>
+    <p class="text-light text-center">Explore top-rated albums, tracks, and artists!</p>
+    <div class="row justify-content-center mt-4">
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body bg-dark">
+                    <h5 class="card-title text-light">Top Rated Albums</h5>
+                    <br>
+                    <p class="card-text text-light">Discover the most loved albums by our community.</p>
+                    <br>
+                    <a href="{% url 'music_app:album_list' %}" class="btn btn-info">View Albums</a>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body bg-dark">
+                    <h5 class="card-title text-light">Top Rated Tracks</h5>
+                    <br>
+                    <p class="card-text text-light">Listen to the most popular tracks in our app.</p>
+                    <br>
+                    <a href="{% url 'music_app:top_tracks_list' %}" class="btn btn-info">View Tracks</a>
+                    <br>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card text-center h-100">
+                <div class="card-body bg-dark">
+                    <h5 class="card-title text-light">Artists</h5>
+                    <br>
+                    <p class="card-text text-light">Browse our collection of talented artists.</p>
+                    <br>
+                    <a href="{% url 'music_app:artist_list' %}" class="btn btn-info">View Artists</a>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

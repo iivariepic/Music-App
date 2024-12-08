@@ -1,49 +1,61 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
-    <h1>Track Information</h1>
-        <li>Title: <strong>{{ track.name }}</strong></li><br>
-        <li>Length: {{ track.get_length }}</li><br>
-        <li><a href="{% url 'music_app:artist_albums' artist_id=track.artist.id %}">
-            Artist: {{ track.artist }}
-        </a></li><br>
-        <li>Release Year: {{ track.release_year }}</li><br>
+<div class="container my-5">
+    <h1 class="text-center mb-4">Track Information</h1>
+    <ul class="list-group mb-5">
+        <li class="list-group-item">
+            <strong>Title:</strong> {{ track.name }}
+        </li>
+        <li class="list-group-item">
+            <strong>Length:</strong> {{ track.get_length }}
+        </li>
+        <li class="list-group-item">
+            <strong><a href="{% url 'music_app:artist_albums' artist_id=track.artist.id %}" class="text-decoration-none">
+                Artist:</strong> {{ track.artist }}
+            </a>
+        </li>
+        <li class="list-group-item">
+            <strong>Release Year:</strong> {{ track.release_year }}
+        </li>
         {% if track.album %}
-            <li><a href="{% url 'music_app:track_list' album_id=track.album.id %}">
-                Album: {{ track.album.name }} | {{ track.album.release_year }}
-            </a></li><br>
+        <li class="list-group-item">
+            <strong><a href="{% url 'music_app:track_list' album_id=track.album.id %}" class="text-decoration-none">
+                Album:</strong> {{ track.album.name }} | {{ track.album.release_year }}
+            </a>
+        </li>
         {% else %}
-            <li>Album: None (Single)</li><br>
+        <li class="list-group-item">
+            <strong>Album:</strong> None (Single)
+        </li>
         {% endif %}
-        <li>Average Score: {{ track.get_avg_score }}/10</li>
+        <li class="list-group-item">
+            <strong>Average Score:</strong> {{ track.get_avg_score }}/10
+        </li>
         {% if user.is_staff %}
-            <br>
-            <li><a href="{% url 'music_app:edit_track' track_id=track.id %}">
-                Edit Track
-            </a></li><br>
-            <li><a href="{% url 'music_app:delete_track' track_id=track.id %}">
-                Delete Track
-            </a></li><br>
+        <div class="mt-4">
+            <a href="{% url 'music_app:edit_track' track_id=track.id %}" class="btn btn-warning btn-sm">Edit Track</a>
+            <a href="{% url 'music_app:delete_track' track_id=track.id %}" class="btn btn-danger btn-sm">Delete Track</a>
+        </div>
         {% endif %}
     </ul>
-    <h1>Reviews for {{ track.name }}</h1>
-    <h2><a href="{% url 'music_app:add_review' type='track' obj_id=track.id %}">Review This Track</a></h2>
-    <ul>
+
+    <h2 class="mt-5 mb-3">Reviews for {{ track.name }}</h2>
+    <h3><a href="{% url 'music_app:add_review' type='track' obj_id=track.id %}" class="btn btn-primary mb-3">Review This Track</a></h3>
+    <ul class="list-group">
         {% for review in reviews %}
-            <li>
-                <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
-                {{ review.content }}<br>
-                {{ review.date_created }}
-                {% if review.creator.id == user.id %}
-                     |
-                    <a href="{% url 'music_app:edit_review' review.id %}">
-                        Edit Review
-                    </a> |
-                    <a href="{% url 'music_app:delete_review' review.id %}" class="delete-review">
-                        Delete Review
-                    </a>
-                {% endif %}
-            </li>
+        <li class="list-group-item">
+            <strong>{{ review.creator }} | {{ review.rating }}/10</strong><br>
+            {{ review.content }}<br>
+            <small>{{ review.date_created }}</small>
+            {% if review.creator.id == user.id %}
+            <div class="mt-2">
+                <a href="{% url 'music_app:edit_review' review.id %}" class="btn btn-info btn-sm">Edit Review</a>
+                <a href="{% url 'music_app:delete_review' review.id %}" class="btn btn-danger btn-sm delete-review">Delete Review</a>
+            </div>
+            {% endif %}
+        </li>
         {% endfor %}
     </ul>
+</div>
 {% endblock %}

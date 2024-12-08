@@ -3,38 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music App</title>
-
+    <title>{% block title %}Music App{% endblock %}</title>
+    {% load bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <style>
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Ensure full height of viewport */
+            margin: 0;
+            background-color: #949494 ;
+        }
+        main {
+            flex: 1; /* Makes the main content take up available space */
+        }
+    </style>
 </head>
 <body>
     <header>
-        <h1>Music App</h1>
-        <nav>
-            <ul>
-                <a href="{% url 'music_app:index' %}">Home</a> -
-                  {% if user.is_authenticated %}
-                    Hello, {{ user.username }}.
-                {% else %}
-                    <a href="{% url 'accounts:register' %}">Register</a> - 
-                    <a href="{% url 'accounts:login' %}">Log in </a>
-                {% endif %}
-            </ul>
+        
+        <nav class="navbar navbar-expand-lg navbar-info bg-info">
+            <div class="container-fluid">
+                
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-light h3" href="{% url 'music_app:index' %}">Home</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item text-light h3">
+                                <span class="nav-link disabled ">Hello, {{ user.username }}.</span>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link text-light h3" href="{% url 'accounts:register' %}">Register</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-light h3" href="{% url 'accounts:login' %}">Log in</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                    {% if user.is_authenticated %}
+                    <form action="{% url 'accounts:logout' %}" method="post" class="d-flex ms-auto">
+                        {% csrf_token %}
+                        <button class="btn btn-primary">Log out</button>
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
         </nav>
     </header>
-    <main>
+    <main class="container my-4">
         {% block content %}
         {% endblock %}
-
-        {% if user.is_authenticated %}
-          <hr />
-          <form action="{% url 'accounts:logout' %}" method="post">
-            {% csrf_token %}
-              <button name='submit'>Log out</button>
-          </form>
-        {% endif %}
     </main>
-    <footer>
-        <p>&copy; 2024 Sovellusohjelmointi ryhmä 3</p>
+    <footer class="bg-secondary text-center py-3">
+        <p class="mb-0 text-light">&copy; 2024 Sovellusohjelmointi ryhmä 3</p>
     </footer>
 </body>
 </html>

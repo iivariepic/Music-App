@@ -1,42 +1,58 @@
 {% extends "music_app/base.html" %}
 
 {% block content %}
+<div class="container my-5">
+    <!-- Edit Artist link for staff -->
     {% if user.is_staff %}
-        <li><a href="{% url 'music_app:edit_artist' artist_id=artist.id %}">
-            Edit Artist
-        </a></li>
+    <div class="text-end">
+        <a href="{% url 'music_app:edit_artist' artist_id=artist.id %}" class="btn btn-warning btn-sm">Edit Artist</a>
+    </div>
     {% endif %}
-    <h1>Albums by {{ artist.name }}</h1>
-    <ul>
+
+    <h1 class="text-center mb-4 text-light">Albums by {{ artist.name }}</h1>
+    
+    <!-- Albums List -->
+    <ul class="list-group mb-5">
         {% if albums %}
             {% for album in albums %}
-                <li>
-                    <a href="{% url 'music_app:track_list' album_id=album.id %}">
-                        {{ album.name }} | {{ album.release_year }}
-                    </a>
-                </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'music_app:track_list' album_id=album.id %}" class="text-decoration-none">
+                    <strong>{{ album.name }}</strong> | {{ album.release_year }}
+                </a>
+            </li>
             {% endfor %}
         {% else %}
-            <li>No albums available for this artist.</li>
+        <li class="list-group-item text-muted">No albums available for this artist.</li>
         {% endif %}
     </ul>
-    {% if user.is_staff %}
-        <h2><a href="{% url 'music_app:add_album' %}">Add New Album</a></h2>
-    {% endif %}
     
-    <h1>Singles by {{ artist.name }}</h1>
-    <ul>
+    {% if user.is_staff %}
+    <div class="text-center mb-5">
+        <a href="{% url 'music_app:add_album' %}" class="btn btn-primary">Add New Album</a>
+    </div>
+    {% endif %}
+
+    <h1 class="text-center mb-4 text-light">Singles by {{ artist.name }}</h1>
+
+    <!-- Singles List -->
+    <ul class="list-group">
         {% if singles %}
             {% for single in singles %}
-                <li><a href="{% url 'music_app:track_details' track_id=single.id %}">
-                    {{ single.name }} | {{ single.release_year }}
-                </a></li>
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <a href="{% url 'music_app:track_details' track_id=single.id %}" class="text-decoration-none">
+                    <strong>{{ single.name }}</strong> | {{ single.release_year }}
+                </a>
+            </li>
             {% endfor %}
         {% else %}
-            <li>No singles available for this artist.</li>
+        <li class="list-group-item text-muted">No singles available for this artist.</li>
         {% endif %}
     </ul>
+
     {% if user.is_staff %}
-        <h2><a href="{% url 'music_app:add_track' artist_id=artist.id album_id=0 %}">Add New Single</a></h2>
+    <div class="text-center mt-4">
+        <a href="{% url 'music_app:add_track' artist_id=artist.id album_id=0 %}" class="btn btn-success">Add New Single</a>
+    </div>
     {% endif %}
+</div>
 {% endblock %}
